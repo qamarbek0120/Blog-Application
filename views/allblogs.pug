@@ -1,0 +1,16 @@
+extends layout.pug 
+
+block content 
+
+    h1 All blogs
+
+    .blogcontainer 
+         
+
+
+        each blog in blogs
+            .blog-wrapper
+                .blog-image 
+                .blog-content   
+                    a.blogs(href="/allblogs/detail")= blog 
+                    a.delete(href="#") Delete
