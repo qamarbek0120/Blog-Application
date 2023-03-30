@@ -1,13 +1,16 @@
 extends layout.pug 
 
-block content 
+block content   
     h1 Create Blog 
 
 
     if error 
         p.error Some error has been occured! Try again! 
 
-    form(action="/create" method="POST")
+    if success 
+        p.success Blog has been created successfully! 
+
+    form(action="/create" method='POST')
         .heading
             label Title
             input.input(type="text" name="title")

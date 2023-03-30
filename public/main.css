@@ -276,3 +276,10 @@ form{
     font-size: 25px;
     color: red;
 }
+.success{
+    display: inline-block;
+    padding: 10px;
+    border: 1px solid green;
+    font-size: 25px;
+    color: green;
+}

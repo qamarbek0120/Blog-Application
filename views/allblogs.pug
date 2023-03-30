@@ -12,5 +12,5 @@ block content
             .blog-wrapper
                 .blog-image 
                 .blog-content   
-                    a.blogs(href="/allblogs/detail")= blog 
+                    a.blogs(href=`/allblogs/${blogs.id}`) #{note}
                     a.delete(href="#") Delete

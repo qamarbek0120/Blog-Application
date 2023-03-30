@@ -1,6 +1,8 @@
-const { request, response } = require('express')
+const {request, response} = require('express')
 const express = require('express')
 const app = express()
+const fs = require('fs')
+
 
 
 
@@ -16,6 +18,9 @@ app.get('/', (request, response)=>{
 app.get('/allblogs/detail', (request, response)=>{
     response.render('detail') 
 })
+app.get('/create', (request, response)=>{
+    response.render('create')
+})
 
 app.post('/create', (request, response)=>{
     const title = request.body.title
@@ -23,15 +28,34 @@ app.post('/create', (request, response)=>{
     if (title.trim() === '' && description.trim() === ''){
         response.render('create', { error: true })
     }
+    else{
+        fs.readFile('./data/blogs.json', (error, data) =>{
+            if (error) throw error
+
+            const blogs = JSON.parse(data)
+
+            blogs.push({
+                id: id(),
+                title: title,
+                description: description,
+            })
+            fs.writeFile('./data/blogs.json', JSON.stringify(blogs), error=>{
+                if (error) throw error
+
+                response.render('create', { success: true })
+            })
+            
+        })
+    }
 })
 
 app.get('/allblogs', (request, response)=>{
-    response.render('allblogs', { blogs: blogs })
+    fs.readFile('./data/blogs.json', (error, data)=>{
+        if (error) throw error
+        const blogs = JSON.parse(data)
+        response.render('allblogs', { blogs: blogs })
+    })
 })
-
-
-
-const blogs = ["Some awasome description1", "some awaswome description2"]
 
 
 app.listen(8000, error =>{
@@ -39,6 +63,10 @@ app.listen(8000, error =>{
 
     console.log('Server is running on port 8000...')
 } )
+
+function id(){
+    return '_' + Math.random().toString(36).substring(2, 9)
+}
 
 
 
