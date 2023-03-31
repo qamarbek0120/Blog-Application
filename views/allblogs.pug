@@ -15,8 +15,13 @@ block content
 
         each blog in blogs
             .blog-wrapper 
-                .blog-image 
+                #blog-image 
                 .blog-content   
-                    a.blogs(href=`/allblogs/${ blog.id }`) #{ blog.title }
+                    a.blogs(href=`/allblogs/${ blog.id }`) #{ blog.title }   
+                    a.edit(href='/${ blog.id }/edit') Edit  
                     a.delete(href=`/${ blog.id }/delete`)
                         img(src="/static/delete.png", alt="")
+
+    button.allblogs-button  
+        a(href="/create") Create Blog   
+        

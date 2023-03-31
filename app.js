@@ -7,6 +7,7 @@ const fileUpload = require('express-fileupload')
 
 
 
+
 app.set('view engine', 'pug')
 
 app.use('/static', express.static('public'))
@@ -37,8 +38,12 @@ app.get('/create', (request, response)=>{
 app.post('/create', (request, response)=>{
     const title = request.body.title
     const description = request.body.description
-    if (title.trim() === '' && description.trim() === ''){
+    const done = request.body.done
+    if (title.trim() === ''){
         response.render('create', { error: true })
+    }
+    else if (description.trim() === ''){
+        response.render('create', { deserror: true })
     }
     else{
         fs.readFile('./data/blogs.json', (error, data) =>{
@@ -46,11 +51,13 @@ app.post('/create', (request, response)=>{
 
             const blogs = JSON.parse(data)
 
-            blogs.push({
+            const blog = {
                 id: id(),
                 title: title,
                 description: description,
-            })
+                done: false
+            }
+            blogs.push(blog)
             fs.writeFile('./data/blogs.json', JSON.stringify(blogs), error=>{
                 if (error) throw error
 
@@ -61,6 +68,27 @@ app.post('/create', (request, response)=>{
     }
     
 })
+
+app.get('/:id/edit', (request, response)=>{
+
+
+    const fs = require('fs')
+    const fileName = './data/blogs.json'
+    const file = require(fileName)
+
+    file.key = "new value"
+
+    fs.writeFile(fileName, JSON.stringify(file), function writeJSON(err) {
+        if (err) return console.log(err)
+        console.log(JSON.stringify(file))
+        console.log('writing to ' + fileName)
+        response.render('edit')
+        
+    })
+
+    
+})
+
 
 app.get('/allblogs/:id', (request, response)=>{
     const id = request.params.id
@@ -94,25 +122,46 @@ app.get('/:id/delete', (request, response)=>{
     })
 })
 
-app.get('/:id/update', (request, response)=>{
-    const id = request.params.id
+// app.get('/:id/update', (request, response)=>{
+//     const id = request.params.id
 
-    fs.readFile('./data/blogs.json', (error, data)=>{
-        if (error) throw error 
-        const blogs = JSON.parse(data)
-        const blog = blogs.filter(blog => blog.id == id)[0]
-        const blogIndex = blogs.indexOf(blog)
-        const spliceBlog = blogs.splice(blogIndex, 1)[0]
-        blogs.push(spliceBlog)
+//     fs.readFile('./data/blogs.json', (error, data)=>{
+//         if (error) throw error 
+//         const blogs = JSON.parse(data)
+//         const blog = blogs.filter(blog => blog.id == id)[0]
+//         const blogIndex = blogs.indexOf(blog)
+//         const spliceBlog = blogs.splice(blogIndex, 1)[0]
+//         blogs.push(spliceBlog)
 
-        fs.writeFile('./data/blogs.json', JSON.stringify(data), (error)=>{
-            if (error) throw error
-            response.render('detail', { blogs: blogs })
-        })
-    })
+//         fs.writeFile('./data/blogs.json', JSON.stringify(data), (error)=>{
+//             if (error) throw error
+//             response.render('detail', { blogs: blogs })
+//         })
+//     })
     
       
-})
+// })
+
+// app.get('/:id/edit', (request, response)=>{
+//     const id = request.params.id
+//     fs.readFile('./data/blogs.json', (error, data)=>{
+//         if (error) throw error
+//         const blogs = JSON.parse(data)
+//         const blog = blogs.filter(blog => blog.id == id)[0]
+//         const blogIdx = blogs.indexOf(blog)
+//         const spliceBlog = blogs.splice(blogIdx, 1)[0]
+//         blog.push(spliceBlog)
+//         fs.writeFile('./data/blogs.json', JSON.stringify(blogs), (error)=>{
+//             if (error) throw error
+//             response.render('allblogs', { blogs: blogs })
+//         })
+//     })
+
+    
+// })
+
+
+
 
 
 
@@ -127,7 +176,10 @@ app.listen(8000, error =>{
 
 function id(){
     return '_' + Math.random().toString(36).substring(2, 9)
-}
+} 
+
+
+
 
 
 

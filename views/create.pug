@@ -5,20 +5,23 @@ block content
 
 
     if error 
-        p.error Some error has been occured! Try again! 
+        p.error Title cannot be empty. Please, fulfill the Title!  
 
     if success 
         p.success Blog has been created successfully! 
 
-    form(action="/create" method='POST')
-        .heading
-            label Title
-            input.input(type="text" name="title")
-        .describe
-            label Description
-            textarea.input(type="text" name="description")
-        //- .upload
-        //-     label Upload Image
-        //-     input.image(type="file" name="image")
-            
-        button.btn Post 
+    if deserror 
+        p.error Description cannot be empty. Please, fulfill the Description 
+    .form 
+        form(action="/create" method='POST')
+            .heading
+                label Title
+                input.input(type="text" name="title")
+            .describe
+                label Description
+                textarea.input(type="text" name="description")
+            //- .upload
+            //-     label Upload Image
+            //-     input.image(type="file" name="image")
+                
+            button.btn Post 

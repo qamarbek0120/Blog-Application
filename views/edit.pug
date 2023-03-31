@@ -1,0 +1,21 @@
+extends layout.pug 
+
+block content 
+
+    h1 Update your Personal Blog
+
+    .edit-conatienr 
+        form(action="/create" method='POST')
+            .heading
+                label Title
+                input.input(type="text" name="title")
+            .describe
+                label Description
+                textarea.input(type="text" name="description")
+        
+            
+            button.btn Repost 
+
+            //- .upload
+        //-     label Upload Image
+        //-     input.image(type="file" name="image")

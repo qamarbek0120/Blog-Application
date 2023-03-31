@@ -1,13 +1,13 @@
-var  imgages = [
-    'public/img1.jpg',
-    'public/img2.jpg',
-    'public/img3.jpg',
-    'public/img4.jpg',
-    'public/img5.jpg',
-    'public/img6.jpg'
+var  images = [
+    'images/img1.jpg',
+    'images/img2.jpg',
+    'images/img3.jpg',
+    'images/img4.jpg',
+    'images/img5.jpg',
+    'images/img6.jpg'
 ]
 
-var img = document.getElementsByClassName("blog-image")
+var img = document.getElementById("blog-image")
 function mgDisp(num){
     var num = Math.floor(Math.random()* 6)
     img.style.backgroundImage = `url("' + images[num + '"])`

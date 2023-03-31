@@ -3,10 +3,7 @@ extends layout.pug
 
 block content
 
-    .edit 
-        h2 Update your blog 
-        a(href=`/${ blog.id }/update`) #{ blog.description }
-            img(src="/static/edit.png", alt="") 
+        
 
     .detail-container 
         h1.blog-title  #{ blog.title }
