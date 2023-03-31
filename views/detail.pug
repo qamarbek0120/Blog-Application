@@ -3,6 +3,13 @@ extends layout.pug
 
 block content
 
+    .edit 
+        h2 Update your blog 
+        a(href=`/${ blog.id }/update`) #{ blog.description }
+            img(src="/static/edit.png", alt="") 
+
     .detail-container 
-        h1.blog-title Some awesome note title 
-        p.blog-description Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae, sequi. Ipsa doloribus neque quibusdam sint? 
+        h1.blog-title  #{ blog.title }
+        p.blog-description  #{ blog.description }
+
+    

@@ -1,16 +1,22 @@
 extends layout.pug 
 
+
 block content 
 
     h1 All blogs
+
+
+    if deleted  
+        p.success Deleted successfully
 
     .blogcontainer 
          
 
 
         each blog in blogs
-            .blog-wrapper
+            .blog-wrapper 
                 .blog-image 
                 .blog-content   
-                    a.blogs(href=`/allblogs/${blogs.id}`) #{note}
-                    a.delete(href="#") Delete
+                    a.blogs(href=`/allblogs/${ blog.id }`) #{ blog.title }
+                    a.delete(href=`/${ blog.id }/delete`)
+                        img(src="/static/delete.png", alt="")
