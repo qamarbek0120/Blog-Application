@@ -28,6 +28,7 @@
 }
 
 .links{
+    position: relative;
     text-decoration: none;
     color: black;
     font-size: 20px;
@@ -36,11 +37,42 @@
     padding: 10px 20px;
     transition: 1s;
 }
+
+.links::after{
+    content: '';
+    position: absolute;
+    background-color: brown;
+    height: 0;
+    left: 0;
+    bottom: -15px;
+    transition: .4s;
+}
 .links:hover{
+    color: brown;
+}
+.links:hover::after{
+    width: 100%;
+    height: 2px;
+    bottom: -6px;
+}
+/* .links:hover{
     background-color: brown;
     color: white;
+    padding: 20px 40px;
 
 
+} */
+
+footer{
+    display: flex;
+    padding-top: 300px;
+    justify-content: center;
+}
+
+footer p{
+    font-size: 20px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: #c2c2c2;
 }
 
 /* Body part */
@@ -84,8 +116,9 @@
 .container a:hover{
     padding: 20px 40px;
     font-size: 30px;
-    background-color: bisque;
+    background-color: brown;
     border-radius: 20px;
+    color: white;
 }
 
 /* Create part */
