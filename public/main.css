@@ -4,6 +4,13 @@
     box-sizing: border-box;
 }
 
+/* body{
+    background-image: url(./images/pexels-henry-&-co-1939485.jpg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+} */
+
 /* Navigation bar style */
 
 .navbar{
@@ -149,6 +156,19 @@ form{
     flex-direction: column;
     padding: 30px 10px;
 }
+
+.username{
+    display: flex;
+    flex-direction: column;
+    padding: 30px 10px;
+}
+
+.username label{
+    font-size: 30px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: black;
+    padding: 10px 0;
+}
 .heading label{
     font-size: 30px;
     font-family: Georgia, 'Times New Roman', Times, serif;
@@ -239,18 +259,25 @@ form{
     flex-wrap: wrap;
     width: 100%;
     justify-content: center;
-    padding: 0 80px;
+    padding: 0 150px;
     
 
 }
 
 .blog-wrapper{
-    padding: 10px 30px;
+    margin: 10px;
+    padding: 10px;
     width: 350px;
     display: flex;
     flex-wrap: wrap;
+    box-shadow: 5px 5px 20px #999;
+    background-color: white;
+    transition: .4s ease-in-out;
     
 
+}
+.blog-wrapper:hover{
+    width: 380px;
 }
 .blogs{
     padding: 10px 0;
@@ -260,14 +287,13 @@ form{
     font-weight: 700;
 }
 
-#blog-image{
-    background-image: url(./img1.jpg);
+.blog-image{
+    background-image: url(./images/img1.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    width: 350px;
+    width: 400px;
     height: 250px;
-    border-radius: 20px 20px 0 0;
 }
 .blog-content{
     width: 100%;
@@ -276,6 +302,26 @@ form{
     flex-direction: row;
     justify-content: space-between;
     
+}
+
+.inside-content{
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+}
+.author{
+    text-align: start;
+    color: #999;
+    text-decoration: none;
+    font-size: 13px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.controls{
+    display: flex;
+    flex-direction: row;
+    text-align: end;
+    align-items: center;
 }
 /* .delete{
     text-decoration: none;

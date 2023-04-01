@@ -2,7 +2,7 @@ doctype html
 html(lang="en")
     head
         link(rel="stylesheet", href="/static/main.css")
-        script(src="javascripts/functions.js")
+        
         title Blog App 
     body
         header.navbar   
@@ -13,6 +13,8 @@ html(lang="en")
                 a.links(href="/allblogs") All blogs
                 a.links(href="/") About the App
         block content 
+
+        script(src="javascripts/functions.js") 
 
 
         

@@ -11,6 +11,7 @@ const fileUpload = require('express-fileupload')
 app.set('view engine', 'pug')
 
 app.use('/static', express.static('public'))
+app.use('/static', express.static('images'))
 
 app.use(express.urlencoded({extended: false}))
 app.use(
@@ -38,9 +39,13 @@ app.get('/create', (request, response)=>{
 app.post('/create', (request, response)=>{
     const title = request.body.title
     const description = request.body.description
+    const username = request.body.username
     const done = request.body.done
     if (title.trim() === ''){
         response.render('create', { error: true })
+    }
+    else if (username.trim() === ""){
+        response.render('create', { deserror: true })
     }
     else if (description.trim() === ''){
         response.render('create', { deserror: true })
@@ -55,7 +60,8 @@ app.post('/create', (request, response)=>{
                 id: id(),
                 title: title,
                 description: description,
-                done: false
+                done: false,
+                username: username,
             }
             blogs.push(blog)
             fs.writeFile('./data/blogs.json', JSON.stringify(blogs), error=>{
@@ -69,25 +75,7 @@ app.post('/create', (request, response)=>{
     
 })
 
-app.get('/:id/edit', (request, response)=>{
 
-
-    const fs = require('fs')
-    const fileName = './data/blogs.json'
-    const file = require(fileName)
-
-    file.key = "new value"
-
-    fs.writeFile(fileName, JSON.stringify(file), function writeJSON(err) {
-        if (err) return console.log(err)
-        console.log(JSON.stringify(file))
-        console.log('writing to ' + fileName)
-        response.render('edit')
-        
-    })
-
-    
-})
 
 
 app.get('/allblogs/:id', (request, response)=>{
@@ -119,6 +107,17 @@ app.get('/:id/delete', (request, response)=>{
             if (error) throw error
             response.render('allblogs', { blogs: filteredBlogs, deleted: true })
         })
+    })
+})
+
+// EDITING
+app.get('/:id/edit', async (req, res) => {
+    const id = req.params.id
+    const username = await username.findByPk(id)
+
+    res.render('edit', {
+        title: title,
+        description: description
     })
 })
 

@@ -14,6 +14,9 @@ block content
         p.error Description cannot be empty. Please, fulfill the Description 
     .form 
         form(action="/create" method='POST')
+            .username 
+                label Username
+                input.input(type="text" name="username")  
             .heading
                 label Title
                 input.input(type="text" name="title")
