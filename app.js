@@ -3,6 +3,12 @@ const express = require('express')
 const app = express()
 const fs = require('fs')
 const fileUpload = require('express-fileupload')
+const multer = require('multer')
+const path = require('path')
+const { title } = require('process')
+const BodyParser = require('body-parser')
+
+
 
 
 
@@ -12,16 +18,42 @@ app.set('view engine', 'pug')
 
 app.use('/static', express.static('public'))
 app.use('/static', express.static('images'))
+app.use(BodyParser.urlencoded({ extended: true }))
 
 app.use(express.urlencoded({extended: false}))
-app.use(
-    fileUpload({
-        limits: {
-            fileSize: 10000000,
-        },
-        abortOnLimit: true,
-    })
-);
+
+
+//  Image upload
+
+
+const storage = multer.diskStorage({
+    destination: (request, file, cb) => {
+      cb(null, "public/images/");
+    },
+  
+    filename: (request, file, cb) => {
+      cb(
+        null,
+        `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
+      );
+    },
+  });
+  
+  let upload = multer({
+    limits: {
+      fileSize: 10000000,
+    },
+    fileFilter(req, file, cb) {
+      if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+        return cb(new Error("Please upload a valid image file"));
+      }
+  
+      cb(undefined, true);
+    },
+    storage: storage,
+  });
+
+
 
 app.get('/', (request, response)=>{
     response.render('home')
@@ -36,11 +68,14 @@ app.get('/create', (request, response)=>{
     response.render('create')
 })
 
-app.post('/create', (request, response)=>{
+app.post('/create', upload.single("image"), (request, response)=>{
     const title = request.body.title
     const description = request.body.description
     const username = request.body.username
     const done = request.body.done
+    const image = request?.file.filename || ""
+    console.log('request', request.file)
+    console.log('image', image)
     if (title.trim() === ''){
         response.render('create', { error: true })
     }
@@ -62,6 +97,7 @@ app.post('/create', (request, response)=>{
                 description: description,
                 done: false,
                 username: username,
+                image
             }
             blogs.push(blog)
             fs.writeFile('./data/blogs.json', JSON.stringify(blogs), error=>{
@@ -74,6 +110,11 @@ app.post('/create', (request, response)=>{
     }
     
 })
+
+
+// Image upload
+
+
 
 
 
@@ -110,16 +151,33 @@ app.get('/:id/delete', (request, response)=>{
     })
 })
 
-// EDITING
-app.get('/:id/edit', async (req, res) => {
-    const id = req.params.id
-    const username = await username.findByPk(id)
+app.get('/search', function (request, response) {
+    // Get the search term from the query parameter
+    let searchTerm = req.query.q;
+  
+    // Read the data from the JSON file
+    const fs = require('fs');
+    const filename = 'data/blogs.json';
+    let fileContent = fs.readFileSync(filename);
+    let content = JSON.parse(fileContent);
+  
+    // Filter the data to find matching results
+    let results = content.filter(blog => blog.title.includes(searchTerm));
+  
+    // Render the search results
+    response.render('search', { results: results });
+  });
 
-    res.render('edit', {
-        title: title,
-        description: description
-    })
-})
+// EDITING
+// app.get('/:id/edit', async (req, res) => {
+//     const id = req.params.id
+//     const username = await username.findByPk(id)
+
+//     res.render('edit', {
+//         title: title,
+//         description: description
+//     })
+// })
 
 // app.get('/:id/update', (request, response)=>{
 //     const id = request.params.id
@@ -160,6 +218,85 @@ app.get('/:id/edit', async (req, res) => {
 // })
 
 
+
+// app.get('/update/:id', function (request, response) {
+//     // Read the data from the JSON file
+//     const fs = require('fs');
+//     const filename = './data/blogs.json';
+//     let fileContent = fs.readFileSync(filename);
+//     let content = JSON.parse(fileContent);
+  
+//     // Find the data to edit
+//     let id = request.params.id;
+//     let data = content.find(item => item.id === id);
+  
+//     // Render the edit page with the data to edit
+//     response.render('update', { data: data });
+//   });
+
+//   app.post('/update/:id', function (request, response) {
+//     // Read the data from the form
+//     let id = request.params.id;
+//     let title = request.body.title;
+//     let description = request.body.description
+  
+//     // Update the JSON file
+//     const fs = require('fs');
+//     const filename = './data/blogs.json';
+//     let fileContent = fs.readFileSync(filename);
+//     let content = JSON.parse(fileContent);
+//     let index = content.findIndex(item => item.id === id);
+//     content[index].title = title
+//     content[index].description = description
+//     fs.writeFileSync(filename, JSON.stringify(content));
+  
+//     // Redirect back to the edit page
+//     res.redirect('/update/' + id);
+//   });
+
+// app.get('/edit/:id', function (request, response) {
+//     // Read the data from the JSON file
+//     const fs = require('fs');
+//     const filename = 'data/blogs.json';
+//     let fileContent = fs.readFileSync(filename);
+//     let content = JSON.parse(fileContent);
+  
+//     // Find the blog to edit
+//     console.log(content)
+//     let id = request.params.id;
+//     let blog = content.find(blog => blog.id === id);
+  
+//     // Render the edit page with the blog to edit
+//     response.render('edit', { blog: blog });
+//   });
+
+//   app.post('/update/:id', function (request, response) {
+//     // Read the data from the form
+//     let id = request.params.id;
+//     let title = request.body.title;
+//     let description = request.body.description;
+  
+//     // Update the JSON file
+//     const fs = require('fs');
+//     const filename = 'data/blogs.json';
+//     let fileContent = fs.readFileSync(filename);
+//     let content = JSON.parse(fileContent);
+//     let index = content.findIndex(item => item.id === id);
+//     content[index].title = title;
+//     content[index].description = description;
+//     fs.writeFileSync(filename, JSON.stringify(content));
+  
+//     // Redirect back to the edit page
+//     response.redirect('/edit/' + id);
+//   });
+
+app.get('/update/:id', (request, response)=>{
+    const id = request.params.id
+
+    fs.readFile('./data/blogs.json', (error, data)=>{
+        
+    })
+})
 
 
 

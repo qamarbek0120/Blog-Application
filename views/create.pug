@@ -13,7 +13,7 @@ block content
     if deserror 
         p.error Description cannot be empty. Please, fulfill the Description 
     .form 
-        form(action="/create" method='POST')
+        form(action="/create" method='POST', enctype='multipart/form-data')
             .username 
                 label Username
                 input.input(type="text" name="username")  
@@ -23,8 +23,8 @@ block content
             .describe
                 label Description
                 textarea.input(type="text" name="description")
-            //- .upload
-            //-     label Upload Image
-            //-     input.image(type="file" name="image")
+            .upload
+                label Upload Image
+                input.image(type="file" name="image")
                 
             button.btn Post 

@@ -179,7 +179,7 @@ form{
 .describe{
     display: flex;
     flex-direction: column;
-    padding: 30px 10px;
+    padding: 10px;
 }
 .describe label{
     font-size: 30px;
@@ -190,7 +190,7 @@ form{
 .upload{
     display: flex;
     flex-direction: column;
-    padding: 30px 10px;
+    padding: 10px;
 }
 .upload label{
     font-size: 30px;
@@ -206,22 +206,19 @@ form{
     border-bottom: 1px solid gray;
 }
 .image{
-    margin: 20px 10px;
-    font-size: 20px;
+    margin: 10px;
+    font-size: 15px;
     background: white;
-    border-radius: 50px;
-    box-shadow: 5px 5px 20px 5px #999;
-    width: 350;
+    border-radius: 5px;
     outline: none;
     width: 600px;
 }
 ::-webkit-file-upload-button{
     color: white;
     background-color: cadetblue;
-    padding: 20px;
+    padding: 10px;
     border: none;
-    border-radius: 50px;
-    box-shadow: 5px 5px 20px 5px #999;
+    border-radius: 10px;
     outline: none;
     cursor: pointer;
 }
@@ -277,7 +274,7 @@ form{
 
 }
 .blog-wrapper:hover{
-    width: 380px;
+    transform: scale(105%);
 }
 .blogs{
     padding: 10px 0;
@@ -288,13 +285,14 @@ form{
 }
 
 .blog-image{
-    background-image: url(./images/img1.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    width: 400px;
-    height: 250px;
+    width: 350px;
+    height: 200px;
 }
+.blog-image img{
+    width: 330px;
+    height: 200px;
+}
+
 .blog-content{
     width: 100%;
     display: flex;
@@ -412,7 +410,7 @@ form{
 .allblogs-button{
     position: fixed;
     display: block;
-    top: 800px;
+    top: 750px;
     left: 1450px;
     width: 100px;
     height: 60px;

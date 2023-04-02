@@ -4,6 +4,16 @@ extends layout.pug
 block content 
 
     h1 All blogs
+    form(action='/search', method='get')
+        label(for='q') Search:
+        input#q(type='text', name='q')
+        input(type='submit', value='Search')
+
+
+    h1 Search Results
+    ul
+        each result in results
+            li= result.title
 
 
     if deleted  
@@ -16,12 +26,13 @@ block content
         each blog in blogs
             .blog-wrapper 
                 .blog-image
+                    img(src=`/static/images/${ blog.image }`, alt="")
                 .blog-content
                     .inside-content 
                         a.blogs(href=`/allblogs/${ blog.id }`) #{ blog.title }  
                         a.author(href=`/allblogs/${ blog.id }`) posted by #{ blog.username }  
                     .controls 
-                        a.edit(href=`/${ blog.id }/edit`) Edit  
+                        a.edit(href=`/edit/:id`) Edit  
                         a.delete(href=`/${ blog.id }/delete`)
                             img(src="/static/images/delete.png", alt="")
 
