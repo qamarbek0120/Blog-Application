@@ -171,30 +171,51 @@ app.get('/:id/delete', (request, response)=>{
     })
 })
 // to edit the relevant data from JSON file but it does not work properly
-app.get('/edit/:id', function(request, response) {
-    fs.readFile(fileName, 'utf8', (error, data) => {
-      if (error) throw error;
-      const blogs = JSON.parse(data);
-      const blog = blogs.find(blog => blog.id === request.params.id);
-      response.render('edit', { title: 'Edit Page', blog });
-    });
-  });
-//   to post the edited JSON data but it does not  properly
-  app.post('/edit/:id', function(request, response) {
-    const updatedData = request.body;
+app.get('/edit/:id',(request,response) => {
+    const id = request.params.id
   
-    fs.readFile(fileName, 'utf8', (error, data) => {
-      if (error) throw error;
-      const blogs = JSON.parse(data);
-      const blog = blogs.findIndex(blog => blog.id === request.params.id);
-      blogs[blog] = updatedData;
+    fs.readFile('./data/blogs.json',(error,data)=>{
+      if(error) throw error
   
-      fs.writeFile(fileName, JSON.stringify(blogs), (error) => {
-        if (error) throw error;
-        response.redirect('/allblogs');
-      });
-    });
-  });
+      const blogs = JSON.parse(data)
+  
+      const blog = blogs.find(blog=>blog.id==id)
+      console.log(blog);
+      
+      response.render('edit',{ blog })
+    })
+})
+// to post and update relevant data from JSON file
+  app.post('/edit/:id',upload.single("image"), (request, response) => {
+    const id = request.params.id;
+    const { title, description } = request.body;
+    const image = request?.file?.filename; 
+  
+    console.log(request.body);
+    fs.readFile('./data/blogs.json',(error,data)=>{
+      if(error) throw error
+  
+      const blogs = JSON.parse(data)
+  
+      const foundBlog = blogs.find(blog => blog.id === id)
+      const otherBlogs = blogs.filter(blog => blog.id !== id)
+      
+      const updatedBlog = {
+        id,
+        title,
+        description,
+        image: image ? image : foundBlog.image
+      }
+      console.log('updatedBlog',updatedBlog)
+      const updatedBlogs = [...otherBlogs, updatedBlog]
+      fs.writeFile('./data/blogs.json', JSON.stringify(updatedBlogs), error=>{
+        if (error) throw error
+    
+        response.render('edit',{success:true, blog: foundBlog})// res.render('create', { success: true })
+      })
+    })
+  })
+
 // to recieve and listen local host by the port number
 app.listen(8000, error =>{
     if (error) console.log(error)

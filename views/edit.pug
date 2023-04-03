@@ -26,6 +26,23 @@ block content
         //-     label Upload Image
         //-     input.image(type="file" name="image")
 
+        //- .form 
+        //-     form(action="/edit/:id" method='POST', enctype='multipart/form-data')
+        //-         .username 
+        //-             label Username
+        //-             input.input(type="text" name="username")  
+        //-         .heading
+        //-             label Title
+        //-             input.input(type="text" name="title")
+        //-         .describe
+        //-             label Description
+        //-             textarea.input(type="text" name="description")
+        //-         .upload
+        //-             label Upload Image
+        //-             input.image(type="file" name="image")
+                    
+        //-         button.btn Repost 
+
         .form 
             form(action="/edit/:id" method='POST', enctype='multipart/form-data')
                 .username 
@@ -36,7 +53,17 @@ block content
                     input.input(type="text" name="title")
                 .describe
                     label Description
-                    textarea.input(type="text" name="description")
+                    textarea.input(type="text", cols='30', rows='10' name="description")
+                .category 
+                    label.label(for="") Choose category
+                    select.input(type="select" name="category")
+                        option(value="")
+                        option(value="Entertainment")  Entertainment 
+                        option(value="Crime")  Crime
+                        option(value="History")  History  
+                        option(value="Creativity")  Creativity 
+                        option(value="Education")  Eduation 
+                        option(value="Religion")  Religion
                 .upload
                     label Upload Image
                     input.image(type="file" name="image")
