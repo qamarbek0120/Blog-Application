@@ -5,14 +5,14 @@ block content
     h1 Update your Personal Blog
 
     .edit-conatienr 
-        form(action='/edit' method='POST')
-            .heading
-                label Title
-                input.input(type="text" name="title")
-            .describe
-                label Description
-                textarea.input(type="text" name="description")
-            button.btn Repost
+        //- form(action='/edit' method='POST')
+        //-     .heading
+        //-         label Title
+        //-         input.input(type="text" name="title")
+        //-     .describe
+        //-         label Description
+        //-         textarea.input(type="text" name="description")
+        //-     button.btn Repost
         //- form(action=`/edit/${ blog. id }`, method='post')
         //-     label(for='title') Title:
         //-     input#title(type='text', name='title', value=blog.title)
@@ -25,3 +25,20 @@ block content
             //- .upload
         //-     label Upload Image
         //-     input.image(type="file" name="image")
+
+        .form 
+            form(action="/edit/:id" method='POST', enctype='multipart/form-data')
+                .username 
+                    label Username
+                    input.input(type="text" name="username")  
+                .heading
+                    label Title
+                    input.input(type="text" name="title")
+                .describe
+                    label Description
+                    textarea.input(type="text" name="description")
+                .upload
+                    label Upload Image
+                    input.image(type="file" name="image")
+                    
+                button.btn Repost 

@@ -11,20 +11,26 @@ block content
     if deleted  
         p.success Deleted successfully
 
+    if nodata 
+        p.error No data available 
+
     .blogcontainer 
          
 
 
         each blog in blogs
             .blog-wrapper 
+                .category-content 
+                    p Category: 
+                        span #{ blog.category }
                 .blog-image
                     img(src=`/static/images/${ blog.image }`, alt="")
                 .blog-content
                     .inside-content 
                         a.blogs(href=`/allblogs/${ blog.id }`) #{ blog.title }  
-                        a.author(href=`/allblogs/${ blog.id }`) posted by #{ blog.username }  
+                        a.author(href=`/allblogs/${ blog.id }`) posted by #{ blog.username } at #{ blog.time } 
                     .controls 
-                        a.edit(href='/edit') Edit  
+                        a.edit(href=`/edit/${blog.id}`) Edit  
                         a.delete(href=`/${ blog.id }/delete`)
                             img(src="/static/images/delete.png", alt="")
 

@@ -64,7 +64,13 @@ app.get('/', (request, response)=>{
 app.get('/allblogs', (request, response)=>{
     fs.readFile('./data/blogs.json', (error, data)=>{
         const blogs = JSON.parse(data)
-        response.render('allblogs', { blogs: blogs })
+        if (blogs === null){
+            response.render('allblogs', { nodata: true })
+        }
+        else{
+            response.render('allblogs', { blogs: blogs })
+        }
+        
     }) 
 })
 app.get('/create', (request, response)=>{
@@ -75,6 +81,16 @@ app.post('/create', upload.single("image"), (request, response)=>{
     const title = request.body.title
     const description = request.body.description
     const username = request.body.username
+    const category = request.body.category
+    const timestamp = new Date()
+    const hours = timestamp.getHours().toString().padStart(2, "0");
+    const minutes = timestamp.getMinutes().toString().padStart(2, "0");
+    const time = `${hours}:${minutes}`;
+
+    const year = timestamp.getFullYear();
+    const month = (timestamp.getMonth() + 1).toString().padStart(2, "0");
+    const day = timestamp.getDate().toString().padStart(2, "0");
+    const date = `${year}/${month}/${day}`;
     const done = request.body.done
     const image = request?.file.filename || ""
     console.log('request', request.file)
@@ -88,9 +104,9 @@ app.post('/create', upload.single("image"), (request, response)=>{
     else if (username.trim() === ""){
         response.render('create', { deserror: true })
     }
-    else if (username.match() != /^[a-zA-Z0-9 ]+$/){
-        response.render('create', { invalidusername: true })
-    }
+    // else if (username.match() != /^[a-zA-Z0-9 ]+$/){
+    //     response.render('create', { invalidusername: true })
+    // }
     else if (description.trim() === ''){
         response.render('create', { deserror: true })
     }
@@ -106,6 +122,9 @@ app.post('/create', upload.single("image"), (request, response)=>{
                 description: description,
                 done: false,
                 username: username,
+                category: category,
+                date,
+                time,
                 image
             }
             blogs.push(blog)
@@ -126,7 +145,9 @@ app.post('/create', upload.single("image"), (request, response)=>{
 
 
 
-
+app.get('/about', (request, response)=>{
+    response.render('about')
+})
 
 app.get('/allblogs/:id', (request, response)=>{
     const id = request.params.id
@@ -295,25 +316,25 @@ app.get('/:id/delete', (request, response)=>{
 
 
 
-app.get('/edit', function(request, response) {
+app.get('/edit/:id', function(request, response) {
     fs.readFile(fileName, 'utf8', (error, data) => {
       if (error) throw error;
-      const json = JSON.parse(data);
-      const item = json.find(item => item.id === request.params.id);
-      response.render('edit', { title: 'Edit Page', item });
+      const blogs = JSON.parse(data);
+      const blog = blogs.find(blog => blog.id === request.params.id);
+      response.render('edit', { title: 'Edit Page', blog });
     });
   });
   
-  app.post('/edit', function(request, response) {
+  app.post('/edit/:id', function(request, response) {
     const updatedData = request.body;
   
     fs.readFile(fileName, 'utf8', (error, data) => {
       if (error) throw error;
-      const json = JSON.parse(data);
-      const itemIndex = json.findIndex(item => item.id === request.params.id);
-      json[itemIndex] = updatedData;
+      const blogs = JSON.parse(data);
+      const blog = blogs.findIndex(blog => blog.id === request.params.id);
+      blogs[blog] = updatedData;
   
-      fs.writeFile(fileName, JSON.stringify(json), (error) => {
+      fs.writeFile(fileName, JSON.stringify(blogs), (error) => {
         if (error) throw error;
         response.redirect('/allblogs');
       });
