@@ -7,6 +7,8 @@ const multer = require('multer')
 const path = require('path')
 const { title } = require('process')
 const BodyParser = require('body-parser')
+const fileName = './data/blogs.json';
+const file = fileName
 
 
 
@@ -16,6 +18,7 @@ const BodyParser = require('body-parser')
 
 app.set('view engine', 'pug')
 
+app.use(express.json())
 app.use('/static', express.static('public'))
 app.use('/static', express.static('images'))
 app.use(BodyParser.urlencoded({ extended: true }))
@@ -79,8 +82,14 @@ app.post('/create', upload.single("image"), (request, response)=>{
     if (title.trim() === ''){
         response.render('create', { error: true })
     }
+    else if (title.length < 3){
+        response.render('create', { invalidtitle: true})
+    }
     else if (username.trim() === ""){
         response.render('create', { deserror: true })
+    }
+    else if (username.match() != /^[a-zA-Z0-9 ]+$/){
+        response.render('create', { invalidusername: true })
     }
     else if (description.trim() === ''){
         response.render('create', { deserror: true })
@@ -151,22 +160,7 @@ app.get('/:id/delete', (request, response)=>{
     })
 })
 
-app.get('/search', function (request, response) {
-    // Get the search term from the query parameter
-    let searchTerm = req.query.q;
-  
-    // Read the data from the JSON file
-    const fs = require('fs');
-    const filename = 'data/blogs.json';
-    let fileContent = fs.readFileSync(filename);
-    let content = JSON.parse(fileContent);
-  
-    // Filter the data to find matching results
-    let results = content.filter(blog => blog.title.includes(searchTerm));
-  
-    // Render the search results
-    response.render('search', { results: results });
-  });
+
 
 // EDITING
 // app.get('/:id/edit', async (req, res) => {
@@ -290,13 +284,41 @@ app.get('/search', function (request, response) {
 //     response.redirect('/edit/' + id);
 //   });
 
-app.get('/update/:id', (request, response)=>{
-    const id = request.params.id
+// app.get('/update/:id', (request, response)=>{
+//     const id = request.params.id
 
-    fs.readFile('./data/blogs.json', (error, data)=>{
+//     fs.readFile('./data/blogs.json', (error, data)=>{
         
-    })
-})
+//     })
+// })
+
+
+
+
+app.get('/edit', function(request, response) {
+    fs.readFile(fileName, 'utf8', (error, data) => {
+      if (error) throw error;
+      const json = JSON.parse(data);
+      const item = json.find(item => item.id === request.params.id);
+      response.render('edit', { title: 'Edit Page', item });
+    });
+  });
+  
+  app.post('/edit', function(request, response) {
+    const updatedData = request.body;
+  
+    fs.readFile(fileName, 'utf8', (error, data) => {
+      if (error) throw error;
+      const json = JSON.parse(data);
+      const itemIndex = json.findIndex(item => item.id === request.params.id);
+      json[itemIndex] = updatedData;
+  
+      fs.writeFile(fileName, JSON.stringify(json), (error) => {
+        if (error) throw error;
+        response.redirect('/allblogs');
+      });
+    });
+  });
 
 
 

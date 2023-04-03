@@ -12,6 +12,10 @@ block content
 
     if deserror 
         p.error Description cannot be empty. Please, fulfill the Description 
+    if invalidtitle 
+        p.error Title must have at least 3 characters 
+    if invalidusername 
+        p.error Please, enter a valid username 
     .form 
         form(action="/create" method='POST', enctype='multipart/form-data')
             .username 

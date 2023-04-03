@@ -7,6 +7,11 @@ block content
 
     .detail-container 
         h1.blog-title  #{ blog.title }
-        p.blog-description  #{ blog.description }
+
+        .details 
+            .detail-image
+                img(src=`/static/images/${ blog.image }`, alt="")
+            .detail-content
+                p.blog-description  #{ blog.description }
 
     

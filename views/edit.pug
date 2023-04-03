@@ -5,21 +5,22 @@ block content
     h1 Update your Personal Blog
 
     .edit-conatienr 
-        //- form(action="/create" method='POST')
-        //-     .heading
-        //-         label Title
-        //-         input.input(type="text" name="title")
-        //-     .describe
-        //-         label Description
-        //-         textarea.input(type="text" name="description")
-        form(action='/update/' + blog.id, method='post')
-            label(for='title') Title:
-            input#title(type='text', name='title', value=blog.title)
-            label(for='description') Description:
-            textarea#description(name='description')= blog.description
-            input(type='submit', value='Update')
+        form(action='/edit' method='POST')
+            .heading
+                label Title
+                input.input(type="text" name="title")
+            .describe
+                label Description
+                textarea.input(type="text" name="description")
+            button.btn Repost
+        //- form(action=`/edit/${ blog. id }`, method='post')
+        //-     label(for='title') Title:
+        //-     input#title(type='text', name='title', value=blog.title)
+        //-     label(for='description') Description:
+        //-     textarea#description(name='description')= blog.description
+        //-     input(type='submit', value='Update')
             
-            //- button.btn Repost 
+         
 
             //- .upload
         //-     label Upload Image
