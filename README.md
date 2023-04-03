@@ -25,4 +25,6 @@ node app
 
 ### Web Blog Application repository on GitHub
 [link to the GitHub Repository](https://github.com/qamarbek0120/Blog-Application.git)
+
+### Web Blog Application link to Glitch live Site
 [link to the Glitch Live Site](https://bristle-wakeful-pound.glitch.me)
