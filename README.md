@@ -6,7 +6,7 @@ To run this application locally, you must follow the steps indicated below:
 
 1. Clone this repository
 ```bash
-git clone [repository link]
+git clone https://github.com/qamarbek0120/Blog-Application.git
 ```
 2. Install dependencies
 ```bash
