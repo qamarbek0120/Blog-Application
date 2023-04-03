@@ -15,20 +15,15 @@ const file = fileName
 
 
 
-
+// to set needed file bases
 app.set('view engine', 'pug')
-
+// to use needed files and folders
 app.use(express.json())
 app.use('/static', express.static('public'))
 app.use('/static', express.static('images'))
 app.use(BodyParser.urlencoded({ extended: true }))
-
 app.use(express.urlencoded({extended: false}))
-
-
 //  Image upload
-
-
 const storage = multer.diskStorage({
     destination: (request, file, cb) => {
       cb(null, "public/images/");
@@ -57,10 +52,11 @@ const storage = multer.diskStorage({
   });
 
 
-
+// to get home page and reload it
 app.get('/', (request, response)=>{
     response.render('home')
 })
+// to get blogs page and show all blogs created in JSON file
 app.get('/allblogs', (request, response)=>{
     fs.readFile('./data/blogs.json', (error, data)=>{
         const blogs = JSON.parse(data)
@@ -73,10 +69,11 @@ app.get('/allblogs', (request, response)=>{
         
     }) 
 })
+// to get create page to add data to JSON file and post it there
 app.get('/create', (request, response)=>{
     response.render('create')
 })
-
+// to post recieved data to the JSOn file
 app.post('/create', upload.single("image"), (request, response)=>{
     const title = request.body.title
     const description = request.body.description
@@ -138,17 +135,11 @@ app.post('/create', upload.single("image"), (request, response)=>{
     }
     
 })
-
-
-// Image upload
-
-
-
-
+// to get about page and show it on the localhost
 app.get('/about', (request, response)=>{
     response.render('about')
 })
-
+// to get each blog by its own ID
 app.get('/allblogs/:id', (request, response)=>{
     const id = request.params.id
     fs.readFile('./data/blogs.json', (error, data)=>{
@@ -158,7 +149,6 @@ app.get('/allblogs/:id', (request, response)=>{
         response.render('detail', { blog: blog })
     })
 })
-
 app.get('/api/v1/allblogs', (request, response)=>{
     fs.readFile('./data/blogs.json', (error, data)=>{
         if (error) throw error  
@@ -166,7 +156,7 @@ app.get('/api/v1/allblogs', (request, response)=>{
         response.json(blogs)
     }) 
 })
-
+// to get blog by ID and delete it
 app.get('/:id/delete', (request, response)=>{
     const id = request.params.id
 
@@ -180,142 +170,7 @@ app.get('/:id/delete', (request, response)=>{
         })
     })
 })
-
-
-
-// EDITING
-// app.get('/:id/edit', async (req, res) => {
-//     const id = req.params.id
-//     const username = await username.findByPk(id)
-
-//     res.render('edit', {
-//         title: title,
-//         description: description
-//     })
-// })
-
-// app.get('/:id/update', (request, response)=>{
-//     const id = request.params.id
-
-//     fs.readFile('./data/blogs.json', (error, data)=>{
-//         if (error) throw error 
-//         const blogs = JSON.parse(data)
-//         const blog = blogs.filter(blog => blog.id == id)[0]
-//         const blogIndex = blogs.indexOf(blog)
-//         const spliceBlog = blogs.splice(blogIndex, 1)[0]
-//         blogs.push(spliceBlog)
-
-//         fs.writeFile('./data/blogs.json', JSON.stringify(data), (error)=>{
-//             if (error) throw error
-//             response.render('detail', { blogs: blogs })
-//         })
-//     })
-    
-      
-// })
-
-// app.get('/:id/edit', (request, response)=>{
-//     const id = request.params.id
-//     fs.readFile('./data/blogs.json', (error, data)=>{
-//         if (error) throw error
-//         const blogs = JSON.parse(data)
-//         const blog = blogs.filter(blog => blog.id == id)[0]
-//         const blogIdx = blogs.indexOf(blog)
-//         const spliceBlog = blogs.splice(blogIdx, 1)[0]
-//         blog.push(spliceBlog)
-//         fs.writeFile('./data/blogs.json', JSON.stringify(blogs), (error)=>{
-//             if (error) throw error
-//             response.render('allblogs', { blogs: blogs })
-//         })
-//     })
-
-    
-// })
-
-
-
-// app.get('/update/:id', function (request, response) {
-//     // Read the data from the JSON file
-//     const fs = require('fs');
-//     const filename = './data/blogs.json';
-//     let fileContent = fs.readFileSync(filename);
-//     let content = JSON.parse(fileContent);
-  
-//     // Find the data to edit
-//     let id = request.params.id;
-//     let data = content.find(item => item.id === id);
-  
-//     // Render the edit page with the data to edit
-//     response.render('update', { data: data });
-//   });
-
-//   app.post('/update/:id', function (request, response) {
-//     // Read the data from the form
-//     let id = request.params.id;
-//     let title = request.body.title;
-//     let description = request.body.description
-  
-//     // Update the JSON file
-//     const fs = require('fs');
-//     const filename = './data/blogs.json';
-//     let fileContent = fs.readFileSync(filename);
-//     let content = JSON.parse(fileContent);
-//     let index = content.findIndex(item => item.id === id);
-//     content[index].title = title
-//     content[index].description = description
-//     fs.writeFileSync(filename, JSON.stringify(content));
-  
-//     // Redirect back to the edit page
-//     res.redirect('/update/' + id);
-//   });
-
-// app.get('/edit/:id', function (request, response) {
-//     // Read the data from the JSON file
-//     const fs = require('fs');
-//     const filename = 'data/blogs.json';
-//     let fileContent = fs.readFileSync(filename);
-//     let content = JSON.parse(fileContent);
-  
-//     // Find the blog to edit
-//     console.log(content)
-//     let id = request.params.id;
-//     let blog = content.find(blog => blog.id === id);
-  
-//     // Render the edit page with the blog to edit
-//     response.render('edit', { blog: blog });
-//   });
-
-//   app.post('/update/:id', function (request, response) {
-//     // Read the data from the form
-//     let id = request.params.id;
-//     let title = request.body.title;
-//     let description = request.body.description;
-  
-//     // Update the JSON file
-//     const fs = require('fs');
-//     const filename = 'data/blogs.json';
-//     let fileContent = fs.readFileSync(filename);
-//     let content = JSON.parse(fileContent);
-//     let index = content.findIndex(item => item.id === id);
-//     content[index].title = title;
-//     content[index].description = description;
-//     fs.writeFileSync(filename, JSON.stringify(content));
-  
-//     // Redirect back to the edit page
-//     response.redirect('/edit/' + id);
-//   });
-
-// app.get('/update/:id', (request, response)=>{
-//     const id = request.params.id
-
-//     fs.readFile('./data/blogs.json', (error, data)=>{
-        
-//     })
-// })
-
-
-
-
+// to edit the relevant data from JSON file but it does not work properly
 app.get('/edit/:id', function(request, response) {
     fs.readFile(fileName, 'utf8', (error, data) => {
       if (error) throw error;
@@ -324,7 +179,7 @@ app.get('/edit/:id', function(request, response) {
       response.render('edit', { title: 'Edit Page', blog });
     });
   });
-  
+//   to post the edited JSON data but it does not  properly
   app.post('/edit/:id', function(request, response) {
     const updatedData = request.body;
   
@@ -340,19 +195,13 @@ app.get('/edit/:id', function(request, response) {
       });
     });
   });
-
-
-
-
-
-
-
+// to recieve and listen local host by the port number
 app.listen(8000, error =>{
     if (error) console.log(error)
 
     console.log('Server is running on port 8000...')
 } )
-
+// this is uniqee id funtion to give each blog relevant ID
 function id(){
     return '_' + Math.random().toString(36).substring(2, 9)
 } 

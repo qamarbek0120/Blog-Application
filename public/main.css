@@ -4,12 +4,7 @@
     box-sizing: border-box;
 }
 
-/* body{
-    background-image: url(./images/pexels-henry-&-co-1939485.jpg);
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-} */
+
 
 /* Navigation bar style */
 
@@ -62,13 +57,8 @@
     height: 2px;
     bottom: -6px;
 }
-/* .links:hover{
-    background-color: brown;
-    color: white;
-    padding: 20px 40px;
 
-
-} */
+/* footer part design */
 
 footer{
     display: flex;
@@ -83,11 +73,6 @@ footer p{
 }
 
 /* Body part */
-
-
-
-
-
 
 .container{
     display: flex;
@@ -126,6 +111,23 @@ footer p{
     background-color: brown;
     border-radius: 20px;
     color: white;
+}
+
+.error{
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    border: 1px solid red;
+    font-size: 25px;
+    color: red;
+}
+.success{
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    border: 1px solid green;
+    font-size: 25px;
+    color: green;
 }
 
 /* Create part */
@@ -289,6 +291,9 @@ form{
     color: black;
     cursor: pointer;
 }
+
+/* allblogs part design  */
+
 .blog-wrapper{
     margin: 10px;
     padding: 10px;
@@ -354,26 +359,14 @@ form{
     text-align: end;
     align-items: center;
 }
-/* .delete{
-    text-decoration: none;
-    color: white;
-    background-color:cadetblue;
-    padding: 10px 20px;
-    text-align: center;
-    transition: .3s;
-    
-}
+
 .delete:hover{
     background-color: red;
-} */
+}
 .delete img{
     width: 40px;
     height: 50px;
 }
-
-
-
-
 .detail-container{
     margin: 30px;
     padding: 0 40px;
@@ -382,30 +375,12 @@ form{
     height: auto;
     background-color: white;
 }
-
 .blog-description{
     font-weight: 300;
     color: black;
     padding: 10px 30px;
     font-size: 18px;
     font-family:fantasy;
-}
-
-.error{
-    display: flex;
-    justify-content: center;
-    padding: 10px;
-    border: 1px solid red;
-    font-size: 25px;
-    color: red;
-}
-.success{
-    display: flex;
-    justify-content: center;
-    padding: 10px;
-    border: 1px solid green;
-    font-size: 25px;
-    color: green;
 }
 
 .edit{
@@ -471,6 +446,8 @@ form{
     font-size: 20px;
 }
 
+
+/* detail page part design */
 .details{
     display: flex;
     flex-direction: row;
